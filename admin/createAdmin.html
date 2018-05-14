@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/layui.css" />
+	</head>
+	<body>
+		
+		<form class="layui-form" action="">
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">用户名</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">头像</label>
+		     <button type="button" class="layui-btn" id="test1">
+			  <i class="layui-icon">&#xe67c;</i>上传图片
+		  	</button>
+		  </div>
+		 
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">密码框</label>
+		    <div class="layui-input-inline">
+		      <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+		    </div>
+		    <div class="layui-form-mid layui-word-aux">辅助文字</div>
+		  </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">权限</label>
+		    <div class="layui-input-block">
+		      <select name="city" lay-verify="required">
+		        <option value=""></option>
+		        <option value="0">系统管理员</option>
+		        <option value="1">普通管理员</option>
+		        <option value="2">教师</option>
+		        <option value="3">游客</option>
+		      </select>
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">性别</label>
+		    <div class="layui-input-block">
+		      <input type="radio" name="sex" value="男" title="男">
+		      <input type="radio" name="sex" value="女" title="女" checked>
+		    </div>
+		  </div>
+		  
+		  <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		  </div>
+		</form>
+		
+		<script src="../layui.js"></script>
+		<script>
+			layui.use('form', function(){
+			  var form = layui.form;
+			  //监听提交
+			  form.on('submit(formDemo)', function(data){
+			    layer.msg(JSON.stringify(data.field));
+			    return false;
+			  });
+			});
+			
+			layui.use('upload', function(){
+			  var upload = layui.upload;
+			  //执行实例
+			  var uploadInst = upload.render({
+			    elem: '#test1' //绑定元素
+			    ,url: '/upload/' //上传接口
+			    ,done: function(res){
+			      //上传完毕回调
+			    }
+			    ,error: function(){
+			      //请求异常回调
+			    }
+			  });
+			});
+		</script>
+	</body>
+</html>

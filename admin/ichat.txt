@@ -1,0 +1,7 @@
+[
+	{name : '1',value : 52.5,color:'#4572a7'},
+	{name : '2',value : 34.3,color:'#aa4643'},
+	{name : '3',value : 8.4,color:'#89a54e'},
+	{name : '4',value : 3.6,color:'#80699b'},
+	{name : '5',value : 1.2,color:'#3d96ae'}
+]

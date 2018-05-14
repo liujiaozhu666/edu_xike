@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/layui.css" />
+	</head>
+	<body>
+		
+		<form class="layui-form" action="">
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">课程类型</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit lay-filter="formDemo">添加课程</button>
+		    </div>
+		  </div>
+		</form>
+		
+		
+		
+		<!-- 数据显示 -->
+		
+		<table class="layui-table">
+		  <colgroup>
+		    <col width="150">
+		    <col width="200">
+		    <col>
+		  </colgroup>
+		  <thead>
+		    <tr>
+		      <th>课程类型ID</th>
+		      <th>课程类型名</th>
+		      <th>操作</th>
+		    </tr> 
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <td>1</td>
+		      <td>HTML</td>
+		      <td>
+		      	<div class="layui-btn-group">
+				  <button class="layui-btn">编辑</button>
+				  <button class="layui-btn">删除</button>
+				</div>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td>1</td>
+		      <td>HTML</td>
+		      <td>
+		      	<div class="layui-btn-group">
+				  <button class="layui-btn">编辑</button>
+				  <button class="layui-btn">删除</button>
+				</div>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td>1</td>
+		      <td>HTML</td>
+		      <td>
+		      	<div class="layui-btn-group">
+				  <button class="layui-btn">编辑</button>
+				  <button class="layui-btn">删除</button>
+				</div>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td>1</td>
+		      <td>HTML</td>
+		      <td>
+		      	<div class="layui-btn-group">
+				  <button class="layui-btn">编辑</button>
+				  <button class="layui-btn">删除</button>
+				</div>
+		      </td>
+		    </tr>
+		  </tbody>
+		</table>
+		<div id="demo0"></div>
+		<script src="../layui.js"></script>
+		<script>
+			// 表单 模块
+			layui.use('form', function(){
+			  var form = layui.form;
+			  //监听提交
+			  form.on('submit(formDemo)', function(data){
+			    layer.msg(JSON.stringify(data.field));
+			    return false;
+			  });
+			});
+			
+			
+			//分页
+			layui.use(['laypage', 'layer'], function(){
+			  var laypage = layui.laypage
+			  ,layer = layui.layer;
+			  
+			  //总页数低于页码总数
+			  laypage.render({
+			    elem: 'demo0'
+			    ,count: 50 //数据总数
+			  });
+			});
+	</script>
+	</body>
+</html>

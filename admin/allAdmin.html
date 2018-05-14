@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/layui.css" />
+	</head>
+	<body>
+		
+		<!-- 搜索 区域 -->
+		<form class="layui-form" action="">
+		  <div class="layui-inline">
+		    <label class="layui-inline">用户名</label>
+		    <div class="layui-input-inline">
+		      <input type="text" name="username"  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  <div class="layui-inline">
+		    <label class="layui-inline">邮箱</label>
+		    <div class="layui-input-inline">
+		      <input type="email" name="email" lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+		    </div>
+		  </div>
+		  <div class="layui-inline">
+		    <div class="layui-inline">
+		      <button class="layui-btn" lay-submit lay-filter="formDemo">搜索</button>
+		    </div>
+		  </div>
+		</form>
+		
+		<!-- 数据 显示  -->
+		<table id="demo" lay-filter="allAdmin"></table>
+		<script src="../layui.js"></script>
+		
+		<script type="text/html" id="barDemo">
+		    <!--<div class="layui-btn-group">-->
+			  <button class="layui-btn" lay-event="detail">查看</button>
+			  <button class="layui-btn" lay-event="edit">编辑</button>
+			  <button class="layui-btn" lay-event="del">删除</button>
+			<!--</div>-->
+		</script>
+		<script>
+			layui.use('table',function(){
+			  var table = layui.table;
+			  //第一个实例
+			  table.render({
+			    elem: '#demo'
+			   
+			    ,height: 415
+			    ,url: 'admin.txt' //数据接口
+			    ,page: true //开启分页
+			    ,size:'lg'
+			    ,cols: [[ //表头
+			       {checkbox: true, fixed: true}
+			      ,{field: 'id', title: 'ID',width:100, sort: true, fixed: 'left'}
+			      ,{field: 'username', title: '用户名', width:110,sort: true}
+			      ,{field: 'sex', title: '性别',width:80}
+			      ,{field: 'head', title: '头像',width:80}
+			      ,{field: 'email', title: '邮箱',sort: true}
+			      ,{field: 'role', title: '权限',width:100}
+			      ,{field: 'caozuo', title: '操作',toolbar:"#barDemo"}
+			    ]]
+			  });
+			  
+//				table.on('tool(allAdmin)', function(obj){
+//				    var data = obj.data;
+//				    if(obj.event === 'detail'){
+//				      layer.msg('ID：'+ data.id + ' 的查看操作');
+//				    } else if(obj.event === 'del'){
+//				      layer.confirm('真的删除行么', function(index){
+//				        obj.del();
+//				        layer.close(index);
+//				      });
+//				    } else if(obj.event === 'edit'){
+//				      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+//				    }
+//				});
+				table.on('tool(allAdmin)', function(obj){
+				    var data = obj.data;
+				    if(obj.event === 'detail'){
+				        layer.msg('ID：'+ data.id + ' 的查看操作');
+				    } else if(obj.event === 'del'){
+				        layer.confirm('真的删除行么', function(index){
+				            console.log(data);
+				            $.ajax({
+				                url: "UVServlet",
+				                type: "POST",
+				                data:{"uvid":data.id,"memthodname":"deleteuv","aid":data.aid},
+				                dataType: "json",
+				                success: function(data){
+				                    if(data.state==1){
+				                       //删除这一行
+				                        obj.del();
+				                       //关闭弹框
+				                        layer.close(index);
+				                        layer.msg("删除成功", {icon: 6});
+				                    }else{
+				                        layer.msg("删除失败", {icon: 5});
+				                    }
+				                }
+				            });
+				        });
+				    } else if(obj.event === 'edit'){
+				        layer.prompt({
+				            formType: 2
+				            ,title: '修改 ID 为 ['+ data.id +'] 的访问量'
+				            ,value: data.uv
+				        }, function(value, index){
+				         //这里一般是发送修改的Ajax请求
+				            EidtUv(data,value,index,obj);
+				        });
+				    }
+				});
+				
+				//编辑的方法
+				function  EidtUv(data,value,index,obj) {
+				    $.ajax({
+//				        url: "UVServlet",
+				        type: "POST",
+				        data:{"id":data.id,"memthodname":"edituv","aid":data.aid,"uv":value},
+				        dataType: "json",
+				        success: function(data){
+				            if(data.state==1){
+				               //关闭弹框
+				                layer.close(index);
+				                //同步更新表格和缓存对应的值
+				                obj.update({
+				                    uv: value
+				                });
+				                layer.msg("修改成功", {icon: 6});
+				            }else{
+				                layer.msg("修改失败", {icon: 5});
+				            }
+				        }
+				
+				    });
+				}
+			
+			});
+			 
+			</script>
+	</body>
+</html>
